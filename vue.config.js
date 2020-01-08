@@ -24,8 +24,8 @@ module.exports = {
     // vue-cli3.x
     chainWebpack:(config) => {
         config.resolve.alias
-        .set('assets',resolve('@/assets'))
-        .set('components',resolve('@/components'))
-        .set('views',resolve('@/views'))
+        .set('assets',resolve('./src/assets'))
+        .set('components',resolve('./src/components'))
+        .set('views',resolve('./src/views'))
     }
 }
