@@ -9,11 +9,23 @@ module.exports = {
         open:true
     },
     // 文件别名
+    // vue-cli2.x
+    // configureWebpack:{
+    //     resolve:{
+    //         alias:{
+    //             'assets':'@/assets',
+    //             'common':'@/common',
+    //             'components':'@/components',
+    //             'network':'@/network',
+    //             'views':'@/views'
+    //         }
+    //     }
+    // }
+    // vue-cli3.x
     chainWebpack:(config) => {
         config.resolve.alias
-        .set('@',resolve('./src'))
-        .set('assets',resolve('./src/assets'))
-        .set('components',resolve('./src/components'))
-        .set('views',resolve('./src/views'))
+        .set('assets',resolve('@/assets'))
+        .set('components',resolve('@/components'))
+        .set('views',resolve('@/views'))
     }
 }
