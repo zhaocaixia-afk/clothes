@@ -1,5 +1,5 @@
 <template>
-    <div id="tab-bar-item" @click="itemClick">
+    <div class="tab-bar-item" @click="itemClick">
         <div v-if="isActive">
             <slot name='item-icon-active'></slot>
         </div>
@@ -45,7 +45,7 @@
 </script>
 
 <style lang="scss" scoped>
-#tab-bar-item{
+.tab-bar-item{
     flex: 1;
     text-align: center;
     height: 49px;
