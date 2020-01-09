@@ -8,8 +8,39 @@
 
 <script>
 import NavBar from '../../components/common/navbar/NavBar'
+// import {request} from '../../network/request'
     export default {
         name:'Home',
+        created() {
+            // 第一种:没有成功
+            // request({
+            //     config:'/home/multidata',
+            //     success:(res) => {
+            //         console.log(res)
+            //     },
+            //     failure:(err) => {
+            //         console.log(err)
+            //     }
+            // })
+            // 第二种
+            // request({
+            //     baseConfig:'/home/multidata',
+            //     success:(res) => {
+            //         console.log(res)
+            //     },
+            //     failure:(err) => {
+            //         console.log(err)
+            //     }
+            // })
+            // 第三种,第四种
+            // request({
+            //     url:'/home/multidata'
+            // }).then( res => {
+            //     console.log(res)
+            // }).catch( err => {
+            //     console.log(err)
+            // })
+        },
         components:{
             NavBar
         }
