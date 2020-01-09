@@ -16,15 +16,61 @@
     </div>
     <home-recommend :recommend="recommend"/>
     <home-feature-view/>
+    <tab-control class="home-tab-control" :tabList="['流行','新款','精选']"/>
+
+    <ul>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
   </div>
 </template>
 
 <script>
-import NavBar from "../../components/common/navbar/NavBar";
+import NavBar from "components/common/navbar/NavBar"
+import TabControl from "../../components/content/tabcontrol/TabControl"
+
 import HomeRecommend from './childComponent/HomeRecommend'
 import HomeFeatureView from './childComponent/HomeFeatureView'
 
-import { getMultidata } from "../../network/home";
+import { getMultidata } from "network/home";
 import Swiper from "swiper";
 
 export default {
@@ -56,7 +102,8 @@ export default {
           },
           loop: true,
           pagination: {
-            el: ".swiper-pagination"
+            el: ".swiper-pagination",
+            clickable: true
           }
         });
       });
@@ -64,6 +111,8 @@ export default {
   },
   components: {
     NavBar,
+    TabControl,
+
     HomeRecommend,
     HomeFeatureView
   }
@@ -87,6 +136,10 @@ export default {
     .swiper-container{
         width: 100%;
         height: 200px;
+    }
+    .home-tab-control{
+      position: sticky;
+      top: 44px;
     }
 }
 </style>
