@@ -15,12 +15,14 @@
       <div class="swiper-pagination"></div>
     </div>
     <home-recommend :recommend="recommend"/>
+    <home-feature-view/>
   </div>
 </template>
 
 <script>
 import NavBar from "../../components/common/navbar/NavBar";
 import HomeRecommend from './childComponent/HomeRecommend'
+import HomeFeatureView from './childComponent/HomeFeatureView'
 
 import { getMultidata } from "../../network/home";
 import Swiper from "swiper";
@@ -62,7 +64,8 @@ export default {
   },
   components: {
     NavBar,
-    HomeRecommend
+    HomeRecommend,
+    HomeFeatureView
   }
 };
 </script>
@@ -71,9 +74,15 @@ export default {
 @import "../../../node_modules/swiper/css/swiper.min.css";
 
 #home {
+  padding-top: 44px;
     .home-nav {
         background-color: var(--color-tint);
         color: var(--color-word);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 9;
     }
     .swiper-container{
         width: 100%;
