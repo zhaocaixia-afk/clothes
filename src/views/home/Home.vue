@@ -7,18 +7,20 @@
     <div class="swiper-container">
       <div class="swiper-wrapper">
         <div class="swiper-slide" v-for="(item, index) in banner" :key="index">
-          <a href="javascript:;">
+          <a :href="item.link">
             <img :src="item.image" />
           </a>
         </div>
       </div>
       <div class="swiper-pagination"></div>
     </div>
+    <home-recommend :recommend="recommend"/>
   </div>
 </template>
 
 <script>
 import NavBar from "../../components/common/navbar/NavBar";
+import HomeRecommend from './childComponent/HomeRecommend'
 
 import { getMultidata } from "../../network/home";
 import Swiper from "swiper";
@@ -38,12 +40,18 @@ export default {
     getMultidata().then(res => {
       this.banner = res.data.banner.list;
       this.dKeyword = res.data.dKeyword.list;
+      this.keywords = res.data.keywords.list;
+      this.recommend = res.data.recommend.list;
+      // 方法一
       this.$nextTick(() => {
         new Swiper(".swiper-container", {
+          // 方法二
           // initialSlide :0,
           // observer:true,//修改swiper自己或子元素时，自动初始化swiper
           // observeParents:true,//修改swiper的父元素时，自动初始化swiper
-          autoplay: true,
+          autoplay: {
+            disableOnInteraction: false //用户操作后,继续自动
+          },
           loop: true,
           pagination: {
             el: ".swiper-pagination"
@@ -51,37 +59,10 @@ export default {
         });
       });
     });
-    // 第一种:没有成功
-    // request({
-    //     config:'/home/multidata',
-    //     success:(res) => {
-    //         console.log(res)
-    //     },
-    //     failure:(err) => {
-    //         console.log(err)
-    //     }
-    // })
-    // 第二种
-    // request({
-    //     baseConfig:'/home/multidata',
-    //     success:(res) => {
-    //         console.log(res)
-    //     },
-    //     failure:(err) => {
-    //         console.log(err)
-    //     }
-    // })
-    // 第三种,第四种
-    // request({
-    //     url:'/home/multidata'
-    // }).then( res => {
-    //     console.log(res)
-    // }).catch( err => {
-    //     console.log(err)
-    // })
   },
   components: {
-    NavBar
+    NavBar,
+    HomeRecommend
   }
 };
 </script>
