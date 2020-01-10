@@ -33,7 +33,10 @@ a{
 }
 img{
     width: 100%;
-    height: 100%;
+}
+p{
+    margin-block-start: 0;
+    margin-block-end: 0;
 }
 .clearfix::after{
     clear: both;

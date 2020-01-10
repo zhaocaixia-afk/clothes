@@ -17,70 +17,26 @@
     <home-recommend :recommend="recommend" />
     <home-feature-view />
     <tab-control class="home-tab-control" :tabList="['流行', '新款', '精选']" />
-
-    <ul>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-    </ul>
+    <goods-list :goodsList="goods['pop'].list"/>
   </div>
 </template>
 
 <script>
 import NavBar from "components/common/navbar/NavBar";
-import TabControl from "../../components/content/tabcontrol/TabControl";
+import TabControl from "components/content/tabcontrol/TabControl";
+import GoodsList from 'components/content/goods/GoodsList';
 
 import HomeRecommend from "./childComponent/HomeRecommend";
 import HomeFeatureView from "./childComponent/HomeFeatureView";
 
 import { getMultidata, getHomeGoods } from "network/home";
 import Swiper from "swiper";
-import { type } from 'os';
 
 export default {
   name: "Home",
   data() {
     return {
       banner: [],
-      dKeyword: [],
-      keywords: [],
       recommend: [],
 
       goods: {
@@ -101,8 +57,6 @@ export default {
     getMultidata() {
       getMultidata().then(res => {
         this.banner = res.data.banner.list;
-        this.dKeyword = res.data.dKeyword.list;
-        this.keywords = res.data.keywords.list;
         this.recommend = res.data.recommend.list;
         // 方法一
         this.$nextTick(() => {
@@ -126,8 +80,8 @@ export default {
     // (/home/data?type=变量&page=变量)接口数据
     getHomeGoods(type) {
       let page = this.goods[type].page + 1
-      getHomeGoods("pop", page).then(res => {
-        // console.log(res);
+      getHomeGoods(type, page).then(res => {
+        console.log(res);
         this.goods[type].list.push(...res.data.list)
         this.goods[type].page += 1
       });
@@ -136,6 +90,7 @@ export default {
   components: {
     NavBar,
     TabControl,
+    GoodsList,
 
     HomeRecommend,
     HomeFeatureView
