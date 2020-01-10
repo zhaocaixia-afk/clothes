@@ -3,28 +3,39 @@
     <nav-bar class="home-nav">
       <div slot="center">购物街</div>
     </nav-bar>
-    <!-- swiper轮播图 -->
-    <div class="swiper-container">
-      <div class="swiper-wrapper">
-        <div class="swiper-slide" v-for="(item, index) in banner" :key="index">
-          <a :href="item.link">
-            <img :src="item.image" />
-          </a>
+    <scroll class="scroll">
+      <!-- swiper轮播图 -->
+      <div class="swiper-container">
+        <div class="swiper-wrapper">
+          <div
+            class="swiper-slide"
+            v-for="(item, index) in banner"
+            :key="index"
+          >
+            <a :href="item.link">
+              <img :src="item.image" />
+            </a>
+          </div>
         </div>
+        <div class="swiper-pagination"></div>
       </div>
-      <div class="swiper-pagination"></div>
-    </div>
-    <home-recommend :recommend="recommend" />
-    <home-feature-view />
-    <tab-control class="home-tab-control" @tabClick="tabClick" :tabList="['流行', '新款', '精选']" />
-    <goods-list :goodsList="goods[currentTabClick].list"/>
+      <home-recommend :recommend="recommend" />
+      <home-feature-view />
+      <tab-control
+        class="home-tab-control"
+        @tabClick="tabClick"
+        :tabList="['流行', '新款', '精选']"
+      />
+      <goods-list :goodsList="goods[currentTabClick].list" />
+    </scroll>
   </div>
 </template>
 
 <script>
 import NavBar from "components/common/navbar/NavBar";
 import TabControl from "components/content/tabcontrol/TabControl";
-import GoodsList from 'components/content/goods/GoodsList';
+import GoodsList from "components/content/goods/GoodsList";
+import Scroll from "../../components/common/scroll/Scroll";
 
 import HomeRecommend from "./childComponent/HomeRecommend";
 import HomeFeatureView from "./childComponent/HomeFeatureView";
@@ -44,27 +55,27 @@ export default {
         new: { page: 0, list: [] },
         sell: { page: 0, list: [] }
       },
-      currentTabClick:'pop'
+      currentTabClick: "pop"
     };
   },
   created() {
     this.getMultidata();
-    this.getHomeGoods('pop');
-    this.getHomeGoods('new');
-    this.getHomeGoods('sell');
+    this.getHomeGoods("pop");
+    this.getHomeGoods("new");
+    this.getHomeGoods("sell");
   },
   methods: {
     // 根据子组件传过来的值,动态的展示goodslist的内容
-    tabClick(index){
-      switch(index){
+    tabClick(index) {
+      switch (index) {
         case 0:
-          this.currentTabClick = 'pop'
-          break
+          this.currentTabClick = "pop";
+          break;
         case 1:
-          this.currentTabClick = 'new' 
-          break
+          this.currentTabClick = "new";
+          break;
         case 2:
-          this.currentTabClick = 'sell'
+          this.currentTabClick = "sell";
       }
     },
     // (/home/multidata)接口数据
@@ -93,11 +104,11 @@ export default {
     },
     // (/home/data?type=变量&page=变量)接口数据
     getHomeGoods(type) {
-      let page = this.goods[type].page + 1
+      let page = this.goods[type].page + 1;
       getHomeGoods(type, page).then(res => {
         // console.log(res);
-        this.goods[type].list.push(...res.data.list)
-        this.goods[type].page += 1
+        this.goods[type].list.push(...res.data.list);
+        this.goods[type].page += 1;
       });
     }
   },
@@ -105,6 +116,7 @@ export default {
     NavBar,
     TabControl,
     GoodsList,
+    Scroll,
 
     HomeRecommend,
     HomeFeatureView
@@ -116,8 +128,10 @@ export default {
 @import "../../../node_modules/swiper/css/swiper.min.css";
 
 #home {
-  padding-top: 44px;
-  padding-bottom: 49px;
+  // padding-top: 44px;
+  // padding-bottom: 49px;
+  height: 100vh;
+  position: relative;
   .home-nav {
     background-color: var(--color-tint);
     color: var(--color-word);
@@ -127,13 +141,26 @@ export default {
     right: 0;
     z-index: 9;
   }
-  .swiper-container {
-    width: 100%;
-    height: 200px;
-  }
-  .home-tab-control {
-    position: sticky;
+  .scroll {
+    overflow: hidden;
+    // 方法一:
+    // height: calc(100% - 93px);
+    // margin-top: 44px;
+    
+    // 方法二:
+    position: absolute;
     top: 44px;
+    bottom: 49px;
+    left: 0;
+    right: 0;
+    .swiper-container {
+      width: 100%;
+      height: 200px;
+    }
+    .home-tab-control {
+      position: sticky;
+      top: 44px;
+    }
   }
 }
 </style>
