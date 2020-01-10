@@ -3,7 +3,7 @@
     <nav-bar class="home-nav">
       <div slot="center">购物街</div>
     </nav-bar>
-    <scroll class="scroll">
+    <scroll ref="scroll" class="scroll" :probe-type="3" @scroll="contentScroll">
       <!-- swiper轮播图 -->
       <div class="swiper-container">
         <div class="swiper-wrapper">
@@ -28,6 +28,8 @@
       />
       <goods-list :goodsList="goods[currentTabClick].list" />
     </scroll>
+
+    <back-top @click.native="backClick" v-show="isShowBackTop"/>
   </div>
 </template>
 
@@ -35,7 +37,8 @@
 import NavBar from "components/common/navbar/NavBar";
 import TabControl from "components/content/tabcontrol/TabControl";
 import GoodsList from "components/content/goods/GoodsList";
-import Scroll from "../../components/common/scroll/Scroll";
+import Scroll from "components/common/scroll/Scroll";
+import BackTop from "../../components/content/backtop/BackTop";
 
 import HomeRecommend from "./childComponent/HomeRecommend";
 import HomeFeatureView from "./childComponent/HomeFeatureView";
@@ -55,7 +58,8 @@ export default {
         new: { page: 0, list: [] },
         sell: { page: 0, list: [] }
       },
-      currentTabClick: "pop"
+      currentTabClick: "pop",
+      isShowBackTop: false
     };
   },
   created() {
@@ -77,6 +81,16 @@ export default {
         case 2:
           this.currentTabClick = "sell";
       }
+    },
+    // 点击回到顶部
+    backClick(){
+      // 调用组件中的方法
+      this.$refs.scroll.scrollTo(0,0)
+      
+    },
+    // 根据滚动,判断是否显示向上按钮
+    contentScroll(position){
+      this.isShowBackTop = (-position.y) > 1000
     },
     // (/home/multidata)接口数据
     getMultidata() {
@@ -117,6 +131,7 @@ export default {
     TabControl,
     GoodsList,
     Scroll,
+    BackTop,
 
     HomeRecommend,
     HomeFeatureView
