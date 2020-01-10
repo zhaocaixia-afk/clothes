@@ -3,7 +3,7 @@
     <nav-bar class="home-nav">
       <div slot="center">购物街</div>
     </nav-bar>
-    <scroll ref="scroll" class="scroll" :probe-type="3" @scroll="contentScroll">
+    <scroll ref="scroll" class="scroll" :probe-type="3" :pull-up-load="true" @scroll="contentScroll" @pullingUp='loadMore'>
       <!-- swiper轮播图 -->
       <div class="swiper-container">
         <div class="swiper-wrapper">
@@ -69,7 +69,7 @@ export default {
     this.getHomeGoods("sell");
   },
   methods: {
-    // 根据子组件传过来的值,动态的展示goodslist的内容
+    // 1.根据子组件传过来的值,动态的展示goodslist的内容
     tabClick(index) {
       switch (index) {
         case 0:
@@ -82,15 +82,19 @@ export default {
           this.currentTabClick = "sell";
       }
     },
-    // 点击回到顶部
+    // 2.点击回到顶部
     backClick(){
       // 调用组件中的方法
       this.$refs.scroll.scrollTo(0,0)
-      
     },
-    // 根据滚动,判断是否显示向上按钮
+    // 3.根据滚动,判断是否显示向上按钮
     contentScroll(position){
       this.isShowBackTop = (-position.y) > 1000
+    },
+    // 4.上拉加载更多
+    loadMore(){
+      this.getHomeGoods(this.currentTabClick)
+      this.$refs.scroll.refresh() //调用刷新函数,解决图片加载缓慢的高度问题
     },
     // (/home/multidata)接口数据
     getMultidata() {
@@ -123,6 +127,8 @@ export default {
         // console.log(res);
         this.goods[type].list.push(...res.data.list);
         this.goods[type].page += 1;
+
+        this.$refs.scroll.finishPullUp()//调用加载更多 多次操作函数
       });
     }
   },
