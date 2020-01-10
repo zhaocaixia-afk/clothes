@@ -16,8 +16,8 @@
     </div>
     <home-recommend :recommend="recommend" />
     <home-feature-view />
-    <tab-control class="home-tab-control" :tabList="['流行', '新款', '精选']" />
-    <goods-list :goodsList="goods['pop'].list"/>
+    <tab-control class="home-tab-control" @tabClick="tabClick" :tabList="['流行', '新款', '精选']" />
+    <goods-list :goodsList="goods[currentTabClick].list"/>
   </div>
 </template>
 
@@ -43,7 +43,8 @@ export default {
         pop: { page: 0, list: [] },
         new: { page: 0, list: [] },
         sell: { page: 0, list: [] }
-      }
+      },
+      currentTabClick:'pop'
     };
   },
   created() {
@@ -53,6 +54,19 @@ export default {
     this.getHomeGoods('sell');
   },
   methods: {
+    // 根据子组件传过来的值,动态的展示goodslist的内容
+    tabClick(index){
+      switch(index){
+        case 0:
+          this.currentTabClick = 'pop'
+          break
+        case 1:
+          this.currentTabClick = 'new' 
+          break
+        case 2:
+          this.currentTabClick = 'sell'
+      }
+    },
     // (/home/multidata)接口数据
     getMultidata() {
       getMultidata().then(res => {
@@ -81,7 +95,7 @@ export default {
     getHomeGoods(type) {
       let page = this.goods[type].page + 1
       getHomeGoods(type, page).then(res => {
-        console.log(res);
+        // console.log(res);
         this.goods[type].list.push(...res.data.list)
         this.goods[type].page += 1
       });
@@ -103,6 +117,7 @@ export default {
 
 #home {
   padding-top: 44px;
+  padding-bottom: 49px;
   .home-nav {
     background-color: var(--color-tint);
     color: var(--color-word);
