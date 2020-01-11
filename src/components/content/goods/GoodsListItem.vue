@@ -1,7 +1,7 @@
 <template>
   <div class="goods-item">
     <a :href="gooditem.link">
-      <img :src="gooditem.showLarge.img" />
+      <img :src="gooditem.showLarge.img" @load="imageLoad"/>
     </a>
     <p class="goods-title">{{ gooditem.title }}</p>
     <p class="goods-info">
@@ -21,7 +21,13 @@ export default {
         return {};
       }
     }
-  }
+  },
+  methods: {
+    // 图片加载完成,发出事件,进行高度刷新
+    imageLoad(){
+      this.$bus.$emit('itemImageLoad')
+    }
+  },
 };
 </script>
 

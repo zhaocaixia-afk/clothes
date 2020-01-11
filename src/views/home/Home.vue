@@ -63,10 +63,18 @@ export default {
     };
   },
   created() {
+    // 1.请求多个数据
     this.getMultidata();
+
+    // 2.请求商品数据
     this.getHomeGoods("pop");
     this.getHomeGoods("new");
     this.getHomeGoods("sell");
+
+    // 3.监听item中图片加载完成
+    this.$bus.$on('itemImageLoad',() => {
+      this.$refs.scroll.refresh()
+    })
   },
   methods: {
     // 1.根据子组件传过来的值,动态的展示goodslist的内容
@@ -94,7 +102,8 @@ export default {
     // 4.上拉加载更多
     loadMore(){
       this.getHomeGoods(this.currentTabClick)
-      this.$refs.scroll.refresh() //调用刷新函数,解决图片加载缓慢的高度问题
+      // 刷新一
+      // this.$refs.scroll.refresh() //调用刷新函数,解决图片加载缓慢的高度问题
     },
     // (/home/multidata)接口数据
     getMultidata() {
