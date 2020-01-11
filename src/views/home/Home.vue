@@ -53,6 +53,8 @@ import HomeFeatureView from "./childComponent/HomeFeatureView";
 import { getMultidata, getHomeGoods } from "network/home";
 import Swiper from "swiper";
 
+import { debounce } from '../../common/utils';
+
 export default {
   name: "Home",
   data() {
@@ -79,23 +81,13 @@ export default {
     this.getHomeGoods("sell");
   },
   mounted() {
-    const refresh = this.debounce(this.$refs.scroll.refresh,500)
+    const refresh = debounce(this.$refs.scroll.refresh,500)
     // 3.监听item中图片加载完成
     this.$bus.$on("itemImageLoad", () => {
       refresh()
     });
   },
   methods: {
-    // 5.仿抖动
-    debounce(func, delay) {
-      let timer = null;
-      return function(...args) {
-        if (timer) clearInterval(timer);
-        timer = setTimeout(() => {
-          func.apply(this, args);
-        }, delay);
-      };
-    },
     // 1.根据子组件传过来的值,动态的展示goodslist的内容
     tabClick(index) {
       switch (index) {
