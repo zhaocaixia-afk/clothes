@@ -3,6 +3,12 @@
     <nav-bar class="home-nav">
       <div slot="center">购物街</div>
     </nav-bar>
+    <tab-control
+      class="home-tab-control"
+      @tabClick="tabClick"
+      :tabList="['流行', '新款', '精选']"
+      ref="tabControl1" v-show="isTabFixed"
+    />
     <scroll
       ref="scroll"
       class="scroll"
@@ -20,7 +26,7 @@
             :key="index"
           >
             <a :href="item.link">
-              <img :src="item.image" />
+              <img :src="item.image" @load="imageLoad" />
             </a>
           </div>
         </div>
@@ -32,6 +38,7 @@
         class="home-tab-control"
         @tabClick="tabClick"
         :tabList="['流行', '新款', '精选']"
+        ref="tabControl2"
       />
       <goods-list :goodsList="goods[currentTabClick].list" />
     </scroll>
@@ -45,7 +52,7 @@ import NavBar from "components/common/navbar/NavBar";
 import TabControl from "components/content/tabcontrol/TabControl";
 import GoodsList from "components/content/goods/GoodsList";
 import Scroll from "components/common/scroll/Scroll";
-import BackTop from "../../components/content/backtop/BackTop";
+import BackTop from "components/content/backtop/BackTop";
 
 import HomeRecommend from "./childComponent/HomeRecommend";
 import HomeFeatureView from "./childComponent/HomeFeatureView";
@@ -53,7 +60,7 @@ import HomeFeatureView from "./childComponent/HomeFeatureView";
 import { getMultidata, getHomeGoods } from "network/home";
 import Swiper from "swiper";
 
-import { debounce } from '../../common/utils';
+import { debounce } from "common/utils";
 
 export default {
   name: "Home",
@@ -68,7 +75,12 @@ export default {
         sell: { page: 0, list: [] }
       },
       currentTabClick: "pop",
-      isShowBackTop: false
+      isShowBackTop: false,
+
+      tabOffsetTop: 0, //tabControl高度
+      isLoad: false, //判读轮播图图片,加载次数
+
+      isTabFixed: false //是否吸顶
     };
   },
   created() {
@@ -81,10 +93,10 @@ export default {
     this.getHomeGoods("sell");
   },
   mounted() {
-    const refresh = debounce(this.$refs.scroll.refresh,500)
     // 3.监听item中图片加载完成
+    const refresh = debounce(this.$refs.scroll.refresh, 500);
     this.$bus.$on("itemImageLoad", () => {
-      refresh()
+      refresh();
     });
   },
   methods: {
@@ -100,21 +112,31 @@ export default {
         case 2:
           this.currentTabClick = "sell";
       }
+      this.$refs.tabControl2.currentIndex = index
+      this.$refs.tabControl1.currentIndex = index
     },
     // 2.点击回到顶部
     backClick() {
       // 调用组件中的方法
       this.$refs.scroll.scrollTo(0, 0);
     },
-    // 3.根据滚动,判断是否显示向上按钮
+    // 3.根据滚动
     contentScroll(position) {
+      // 1.判断是否显示向上按钮
       this.isShowBackTop = -position.y > 1000;
+      // 2.决定tabControl是否吸顶
+      this.isTabFixed = -position.y > this.tabOffsetTop;
     },
     // 4.上拉加载更多
     loadMore() {
       this.getHomeGoods(this.currentTabClick);
-      // 刷新一
-      // this.$refs.scroll.refresh() //调用刷新函数,解决图片加载缓慢的高度问题
+    },
+    // 5.轮播图图片是否加载完
+    imageLoad() {
+      if (!this.isLoad) {
+        this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop;
+        this.isLoad = true;
+      }
     },
 
     // (/home/multidata)接口数据
@@ -170,17 +192,14 @@ export default {
 @import "../../../node_modules/swiper/css/swiper.min.css";
 
 #home {
-  // padding-top: 44px;
-  // padding-bottom: 49px;
   height: 100vh;
   position: relative;
   .home-nav {
     background-color: var(--color-tint);
     color: var(--color-word);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+  }
+  .home-tab-control{
+    position: relative;
     z-index: 9;
   }
   .scroll {
@@ -198,10 +217,6 @@ export default {
     .swiper-container {
       width: 100%;
       height: 200px;
-    }
-    .home-tab-control {
-      position: sticky;
-      top: 44px;
     }
   }
 }
