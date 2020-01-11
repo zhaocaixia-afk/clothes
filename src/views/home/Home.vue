@@ -80,7 +80,9 @@ export default {
       tabOffsetTop: 0, //tabControl高度
       isLoad: false, //判读轮播图图片,加载次数
 
-      isTabFixed: false //是否吸顶
+      isTabFixed: false, //是否吸顶
+
+      saveY: 0
     };
   },
   created() {
@@ -98,6 +100,14 @@ export default {
     this.$bus.$on("itemImageLoad", () => {
       refresh();
     });
+  },
+  // 下面两个函数,解决keep-active问题
+  activated() {
+    this.$refs.scroll.scrollTo(0,this.saveY,0)
+    this.$refs.scroll.refresh()
+  },
+  deactivated() {
+    this.saveY = this.$refs.scroll.getScrollY()
   },
   methods: {
     // 1.根据子组件传过来的值,动态的展示goodslist的内容
