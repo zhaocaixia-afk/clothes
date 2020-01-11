@@ -3,7 +3,14 @@
     <nav-bar class="home-nav">
       <div slot="center">购物街</div>
     </nav-bar>
-    <scroll ref="scroll" class="scroll" :probe-type="3" :pull-up-load="true" @scroll="contentScroll" @pullingUp='loadMore'>
+    <scroll
+      ref="scroll"
+      class="scroll"
+      :probe-type="3"
+      :pull-up-load="true"
+      @scroll="contentScroll"
+      @pullingUp="loadMore"
+    >
       <!-- swiper轮播图 -->
       <div class="swiper-container">
         <div class="swiper-wrapper">
@@ -29,7 +36,7 @@
       <goods-list :goodsList="goods[currentTabClick].list" />
     </scroll>
 
-    <back-top @click.native="backClick" v-show="isShowBackTop"/>
+    <back-top @click.native="backClick" v-show="isShowBackTop" />
   </div>
 </template>
 
@@ -70,13 +77,25 @@ export default {
     this.getHomeGoods("pop");
     this.getHomeGoods("new");
     this.getHomeGoods("sell");
-
+  },
+  mounted() {
+    const refresh = this.debounce(this.$refs.scroll.refresh,500)
     // 3.监听item中图片加载完成
-    this.$bus.$on('itemImageLoad',() => {
-      this.$refs.scroll.refresh()
-    })
+    this.$bus.$on("itemImageLoad", () => {
+      refresh()
+    });
   },
   methods: {
+    // 5.仿抖动
+    debounce(func, delay) {
+      let timer = null;
+      return function(...args) {
+        if (timer) clearInterval(timer);
+        timer = setTimeout(() => {
+          func.apply(this, args);
+        }, delay);
+      };
+    },
     // 1.根据子组件传过来的值,动态的展示goodslist的内容
     tabClick(index) {
       switch (index) {
@@ -91,20 +110,21 @@ export default {
       }
     },
     // 2.点击回到顶部
-    backClick(){
+    backClick() {
       // 调用组件中的方法
-      this.$refs.scroll.scrollTo(0,0)
+      this.$refs.scroll.scrollTo(0, 0);
     },
     // 3.根据滚动,判断是否显示向上按钮
-    contentScroll(position){
-      this.isShowBackTop = (-position.y) > 1000
+    contentScroll(position) {
+      this.isShowBackTop = -position.y > 1000;
     },
     // 4.上拉加载更多
-    loadMore(){
-      this.getHomeGoods(this.currentTabClick)
+    loadMore() {
+      this.getHomeGoods(this.currentTabClick);
       // 刷新一
       // this.$refs.scroll.refresh() //调用刷新函数,解决图片加载缓慢的高度问题
     },
+
     // (/home/multidata)接口数据
     getMultidata() {
       getMultidata().then(res => {
@@ -137,7 +157,7 @@ export default {
         this.goods[type].list.push(...res.data.list);
         this.goods[type].page += 1;
 
-        this.$refs.scroll.finishPullUp()//调用加载更多 多次操作函数
+        this.$refs.scroll.finishPullUp(); //调用加载更多 多次操作函数
       });
     }
   },
@@ -176,7 +196,7 @@ export default {
     // 方法一:
     // height: calc(100% - 93px);
     // margin-top: 44px;
-    
+
     // 方法二:
     position: absolute;
     top: 44px;

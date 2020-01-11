@@ -25,6 +25,7 @@ export default {
   methods: {
     // 图片加载完成,发出事件,进行高度刷新
     imageLoad(){
+      
       this.$bus.$emit('itemImageLoad')
     }
   },
