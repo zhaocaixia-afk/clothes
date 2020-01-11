@@ -1,8 +1,6 @@
 <template>
-  <div class="goods-item">
-    <a :href="gooditem.link">
-      <img :src="gooditem.showLarge.img" @load="imageLoad"/>
-    </a>
+  <div class="goods-item" @click="itemClick">
+    <img :src="gooditem.showLarge.img" @load="imageLoad"/>
     <p class="goods-title">{{ gooditem.title }}</p>
     <p class="goods-info">
       <span class="price">{{ gooditem.price }}</span>
@@ -25,8 +23,16 @@ export default {
   methods: {
     // 图片加载完成,发出事件,进行高度刷新
     imageLoad(){
-      
       this.$bus.$emit('itemImageLoad')
+    },
+    itemClick(){
+      // this.$router.push('/detail'+this.gooditem.iid)
+      this.$router.push({
+        path: '/detail',
+        query: {
+          iid: this.gooditem.iid
+        }
+      })
     }
   },
 };
@@ -35,10 +41,8 @@ export default {
 <style lang="scss" scoped>
 .goods-item {
   width: 48%;
-  a {
-    img {
-      border-radius: 5px;
-    }
+  img {
+    border-radius: 5px;
   }
   .goods-title{
       white-space: nowrap;
