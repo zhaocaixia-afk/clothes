@@ -2,27 +2,35 @@
   <div class="detail">
     <detail-nav-bar></detail-nav-bar>
     <!-- 轮播图 -->
-    <div class="swiper-container">
-      <div class="swiper-wrapper">
-        <div class="swiper-slide" v-for="(item, index) in topImages" :key="index">
-            <img :src="item"/>
+    <scroll class="scroll" :probe-type="3" ref="scroll">
+      <div class="swiper-container">
+        <div class="swiper-wrapper">
+          <div
+            class="swiper-slide"
+            v-for="(item, index) in topImages"
+            :key="index"
+          >
+            <img :src="item" />
+          </div>
         </div>
+        <div class="swiper-pagination"></div>
       </div>
-      <div class="swiper-pagination"></div>
-    </div>
-    <detail-base-info :goods="goods"/>
-    <detail-shop-info :shop="shop"/>
+      <detail-base-info :goods="goods" />
+      <detail-shop-info :shop="shop" />
+    </scroll>
   </div>
 </template>
 
 <script>
 import DetailNavBar from "./childComps/DetailNavBar";
-import DetailBaseInfo from './childComps/DetailBaseInfo';
-import DetailShopInfo from './childComps/DetailShopInfo'
+import DetailBaseInfo from "./childComps/DetailBaseInfo";
+import DetailShopInfo from "./childComps/DetailShopInfo";
 
-import { getDetail,Goods,Shop } from "../../network/detail";
+import Scroll from "components/common/scroll/Scroll";
 
-import Swiper from "swiper"
+import { getDetail, Goods, Shop } from "../../network/detail";
+
+import Swiper from "swiper";
 
 export default {
   name: "Detail",
@@ -44,13 +52,17 @@ export default {
     getDetail() {
       getDetail(this.iid).then(res => {
         console.log(res);
-        const data = res.result
+        const data = res.result;
         this.topImages = data.itemInfo.topImages;
 
         // 1.获取商品信息
-        this.goods = new Goods(data.itemInfo,data.columns,data.shopInfo.services)
+        this.goods = new Goods(
+          data.itemInfo,
+          data.columns,
+          data.shopInfo.services
+        );
         // 2.获取商家信息
-        this.shop = new Shop(data.shopInfo)
+        this.shop = new Shop(data.shopInfo);
         // 轮播图
         this.$nextTick(() => {
           new Swiper(".swiper-container", {
@@ -70,16 +82,23 @@ export default {
   components: {
     DetailNavBar,
     DetailBaseInfo,
-    DetailShopInfo
+    DetailShopInfo,
+
+    Scroll
   }
 };
 </script>
 
 <style lang="scss" scoped>
-@import '../../../node_modules/swiper/css/swiper.min.css';
-.detail{
-    .swiper-container{
-        height: 400px;
+@import "../../../node_modules/swiper/css/swiper.min.css";
+.detail {
+  height: 100vh;
+  .scroll {
+    overflow: hidden;
+    height: calc(100% - 44px);
+    .swiper-container {
+      height: 400px;
     }
+  }
 }
 </style>
