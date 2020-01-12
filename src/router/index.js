@@ -12,10 +12,10 @@ Vue.use(VueRouter)
 
 const routes = [
   { path:'', redirect: '/home' },
-  { path:'/home', component: Home },
-  { path:'/category', component: Category },
-  { path:'/cart', component: Cart },
-  { path:'/profile', component: Profile },
+  { path:'/home', component: Home,meta:{showFooter:true} },
+  { path:'/category', component: Category,meta:{showFooter:true} },
+  { path:'/cart', component: Cart,meta:{showFooter:true} },
+  { path:'/profile', component: Profile,meta:{showFooter:true} },
 
   { path:'/detail', component: Detail }
   // { path:'/detail/:iid', component: Detail }
