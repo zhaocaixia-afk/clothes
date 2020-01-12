@@ -17,6 +17,7 @@
       </div>
       <detail-base-info :goods="goods" />
       <detail-shop-info :shop="shop" />
+      <detail-images-info :detailInfo="detailInfo"/>
     </scroll>
   </div>
 </template>
@@ -25,6 +26,7 @@
 import DetailNavBar from "./childComps/DetailNavBar";
 import DetailBaseInfo from "./childComps/DetailBaseInfo";
 import DetailShopInfo from "./childComps/DetailShopInfo";
+import DetailImagesInfo from './childComps/DetailImagesInfo';
 
 import Scroll from "components/common/scroll/Scroll";
 
@@ -39,7 +41,8 @@ export default {
       iid: null,
       topImages: [],
       goods: {},
-      shop: {}
+      shop: {},
+      detailInfo: {}
     };
   },
   created() {
@@ -54,7 +57,6 @@ export default {
         console.log(res);
         const data = res.result;
         this.topImages = data.itemInfo.topImages;
-
         // 1.获取商品信息
         this.goods = new Goods(
           data.itemInfo,
@@ -62,7 +64,10 @@ export default {
           data.shopInfo.services
         );
         // 2.获取商家信息
-        this.shop = new Shop(data.shopInfo);
+        this.shop = new Shop(data.shopInfo)
+        // 3.获取图片
+        this.detailInfo = data.detailInfo
+
         // 轮播图
         this.$nextTick(() => {
           new Swiper(".swiper-container", {
@@ -77,12 +82,16 @@ export default {
           });
         });
       });
+    },
+    imgLoad(){
+      this.$refs.scroll.refresh();
     }
   },
   components: {
     DetailNavBar,
     DetailBaseInfo,
     DetailShopInfo,
+    DetailImagesInfo,
 
     Scroll
   }
@@ -97,7 +106,7 @@ export default {
     overflow: hidden;
     height: calc(100% - 44px);
     .swiper-container {
-      height: 400px;
+      height: 300px;
     }
   }
 }

@@ -32,18 +32,6 @@
     <div class="button">
       <button>进店逛逛</button>
     </div>
-    <ul>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-    </ul>
   </div>
 </template>
 
@@ -132,7 +120,7 @@ export default {
       padding: 3px 35px;
       border-radius: 5px;
       border: none;
-      background: rgb(240,243,249);
+      background-color: #f2f5f8;
     }
   }
 }

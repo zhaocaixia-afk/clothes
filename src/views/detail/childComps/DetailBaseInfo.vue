@@ -15,10 +15,9 @@
       <div
         class="info-service-item"
         v-for="index in goods.services.length - 1"
-        :key="index"
+        :key="index" v-if="goods.services[index - 1].icon"
       >
         <img
-          v-if="goods.services[index - 1].icon"
           :src="goods.services[index - 1].icon"
         />
         <span>{{ goods.services[index - 1].name }}</span>
@@ -43,7 +42,8 @@ export default {
 
 <style lang="scss" scoped>
 .base-info {
-  padding: 10px 8px;
+  padding: 10px 8px 0 8px;
+  border-bottom: 5px solid #f2f5f8;
   .info-title {
     color: black;
     font-weight: bold;
@@ -70,20 +70,20 @@ export default {
   .info-other {
     display: flex;
     justify-content: space-between;
-    padding: 20px 0 5px 0;
-    border-bottom: 1px solid rgb(200,200,200);
+    margin-top: 20px;
+    border-bottom: 1px solid rgba(100, 100, 100, 0.1);
   }
   .info-service {
-    padding: 20px 0;
-    border-bottom: 5px solid rgb(220,220,220);
+    line-height: 60px;
     display: flex;
     justify-content: space-between;
     .info-service-item {
       display: flex;
       align-items: center;
       img {
-        width: 20px;
-        height: 20px;
+        width: 14px;
+        height: 14px;
+        margin-right: 5px;
       }
       span{
           color: var(--color-black);
