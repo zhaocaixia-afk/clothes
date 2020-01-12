@@ -11,14 +11,16 @@
       <div class="swiper-pagination"></div>
     </div>
     <detail-base-info :goods="goods"/>
+    <detail-shop-info :shop="shop"/>
   </div>
 </template>
 
 <script>
 import DetailNavBar from "./childComps/DetailNavBar";
 import DetailBaseInfo from './childComps/DetailBaseInfo';
+import DetailShopInfo from './childComps/DetailShopInfo'
 
-import { getDetail,Goods } from "../../network/detail";
+import { getDetail,Goods,Shop } from "../../network/detail";
 
 import Swiper from "swiper"
 
@@ -28,7 +30,8 @@ export default {
     return {
       iid: null,
       topImages: [],
-      goods: {}
+      goods: {},
+      shop: {}
     };
   },
   created() {
@@ -44,8 +47,10 @@ export default {
         const data = res.result
         this.topImages = data.itemInfo.topImages;
 
-        // 获取商品信息
+        // 1.获取商品信息
         this.goods = new Goods(data.itemInfo,data.columns,data.shopInfo.services)
+        // 2.获取商家信息
+        this.shop = new Shop(data.shopInfo)
         // 轮播图
         this.$nextTick(() => {
           new Swiper(".swiper-container", {
@@ -64,7 +69,8 @@ export default {
   },
   components: {
     DetailNavBar,
-    DetailBaseInfo
+    DetailBaseInfo,
+    DetailShopInfo
   }
 };
 </script>

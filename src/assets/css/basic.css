@@ -4,6 +4,7 @@
 :root {
     /* 为一些变量 */
     --color-text: #666;
+    --color-black: black;
     --color-high-text: #ff5777;
     --color-tint: #ff8198;
     --color-background: #fff;

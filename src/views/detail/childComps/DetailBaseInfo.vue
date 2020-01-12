@@ -86,7 +86,7 @@ export default {
         height: 20px;
       }
       span{
-          color: black;
+          color: var(--color-black);
           font-weight: bold;
       }
     }

@@ -9,6 +9,7 @@ export function getDetail(iid){
     })
 }
 
+// 商品
 export class Goods{
     constructor(itemInfo,columns,services){
         this.title = itemInfo.title
@@ -19,5 +20,17 @@ export class Goods{
         this.columns = columns
         this.services = services
         this.realPrice = itemInfo.lowNowPrice
+    }
+}
+
+// 商家
+export class Shop{
+    constructor(shopInfo){
+        this.logo = shopInfo.shopLogo;
+        this.name = shopInfo.name;
+        this.fans = shopInfo.cFans;
+        this.sells = shopInfo.cSells;
+        this.score = shopInfo.score;
+        this.goodsCount = shopInfo.cGoods;
     }
 }
