@@ -60,10 +60,12 @@ import HomeFeatureView from "./childComponent/HomeFeatureView";
 import { getMultidata, getHomeGoods } from "network/home";
 import Swiper from "swiper";
 
-import { debounce } from "common/utils";
+// import { debounce } from "common/utils";
+import {itemListenerMixin} from 'common/mixin';
 
 export default {
   name: "Home",
+  mixins: [itemListenerMixin],
   data() {
     return {
       banner: [],
@@ -82,7 +84,9 @@ export default {
 
       isTabFixed: false, //是否吸顶
 
-      saveY: 0
+      saveY: 0,
+
+      // itemImgListener: null
     };
   },
   created() {
@@ -95,11 +99,14 @@ export default {
     this.getHomeGoods("sell");
   },
   mounted() {
-    // 3.监听item中图片加载完成
-    const refresh = debounce(this.$refs.scroll.refresh, 500);
-    this.$bus.$on("itemImageLoad", () => {
-      refresh();
-    });
+    // Home同Detail中相同部分抽离到mixin里面itemListenerMixin
+    // // 3.监听item中图片加载完成
+    // const refresh = debounce(this.$refs.scroll.refresh, 100);
+    // // 对监听的事件进行保存,方便取消
+    // this.itemImgListener = () => {
+    //   refresh();
+    // }
+    // this.$bus.$on("itemImageLoad",this.itemImgListener);
   },
   // 下面两个函数,解决keep-active问题
   activated() {
@@ -111,6 +118,8 @@ export default {
     // 1.记录Y值
     this.saveY = this.$refs.scroll.getScrollY()
     // 2.取消全局事件的监听
+    this.$bus.$off('itemImageLoad',this.itemImgListener)
+    console.log('QU')
   },
   methods: {
     // 1.根据子组件传过来的值,动态的展示goodslist的内容

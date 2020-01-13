@@ -17,10 +17,10 @@
       </div>
       <detail-base-info :goods="goods" />
       <detail-shop-info :shop="shop" />
-      <detail-images-info :detailInfo="detailInfo"/>
-      <detail-params-info :goodsParam="goodsParam"/>
-      <detail-comment-info :commentInfo="commentInfo"/>
-      <goods-list :goodsList="recommend"/>
+      <detail-images-info :detailInfo="detailInfo" />
+      <detail-params-info :goodsParam="goodsParam" />
+      <detail-comment-info :commentInfo="commentInfo" />
+      <goods-list :goodsList="recommend" />
     </scroll>
   </div>
 </template>
@@ -29,20 +29,29 @@
 import DetailNavBar from "./childComps/DetailNavBar";
 import DetailBaseInfo from "./childComps/DetailBaseInfo";
 import DetailShopInfo from "./childComps/DetailShopInfo";
-import DetailImagesInfo from './childComps/DetailImagesInfo';
-import DetailParamsInfo from './childComps/DetailParamsInfo';
-import DetailCommentInfo from './childComps/DetailCommentInfo';
+import DetailImagesInfo from "./childComps/DetailImagesInfo";
+import DetailParamsInfo from "./childComps/DetailParamsInfo";
+import DetailCommentInfo from "./childComps/DetailCommentInfo";
 
 import Scroll from "components/common/scroll/Scroll";
 
-import { getDetail, getRecommend, Goods, Shop, GoodsParam } from "network/detail";
+import {
+  getDetail,
+  getRecommend,
+  Goods,
+  Shop,
+  GoodsParam
+} from "network/detail";
 
 import Swiper from "swiper";
 
-import GoodsList from '../../components/content/goods/GoodsList'
+import GoodsList from "components/content/goods/GoodsList";
+
+import {itemListenerMixin} from 'common/mixin';
 
 export default {
   name: "Detail",
+  mixins: [itemListenerMixin],
   data() {
     return {
       iid: null,
@@ -53,7 +62,8 @@ export default {
       goodsParam: {},
       commentInfo: {},
 
-      recommend: []
+      recommend: [],
+      // itemImgListener: null
     };
   },
   created() {
@@ -61,6 +71,12 @@ export default {
     this.iid = this.$route.query.iid;
     this.getDetail(); //请求详情数据
     this.getRecommend();
+  },
+  mounted() {
+    // Home同Detail中相同部分抽离到mixin里面itemListenerMixin
+  },
+  destroyed(){
+    this.$bus.$off("itemImageLoad", this.itemImgListener)
   },
   methods: {
     // 请求数据方法
@@ -76,14 +92,17 @@ export default {
           data.shopInfo.services
         );
         // 2.获取商家信息
-        this.shop = new Shop(data.shopInfo)
+        this.shop = new Shop(data.shopInfo);
         // 3.获取商品图片
-        this.detailInfo = data.detailInfo
+        this.detailInfo = data.detailInfo;
         // 4.获取商品尺寸
-        this.goodsParam = new GoodsParam(data.itemParams.info,data.itemParams.rule)
+        this.goodsParam = new GoodsParam(
+          data.itemParams.info,
+          data.itemParams.rule
+        );
         // 5.商品评论信息
-        if(data.rate.cRate !== 0){
-          this.commentInfo = data.rate.list[0]
+        if (data.rate.cRate !== 0) {
+          this.commentInfo = data.rate.list[0];
         }
 
         // 轮播图
@@ -101,13 +120,13 @@ export default {
         });
       });
     },
-    getRecommend(){
+    getRecommend() {
       getRecommend().then(res => {
-        console.log(res)
-        this.recommend = res.data.list
-      })
+        // console.log(res);
+        this.recommend = res.data.list;
+      });
     },
-    imgLoad(){
+    imgLoad() {
       this.$refs.scroll.refresh();
     }
   },
