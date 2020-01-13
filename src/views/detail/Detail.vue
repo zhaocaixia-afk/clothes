@@ -18,6 +18,7 @@
       <detail-base-info :goods="goods" />
       <detail-shop-info :shop="shop" />
       <detail-images-info :detailInfo="detailInfo"/>
+      <detail-params-info :goodsParam="goodsParam"/>
     </scroll>
   </div>
 </template>
@@ -27,10 +28,11 @@ import DetailNavBar from "./childComps/DetailNavBar";
 import DetailBaseInfo from "./childComps/DetailBaseInfo";
 import DetailShopInfo from "./childComps/DetailShopInfo";
 import DetailImagesInfo from './childComps/DetailImagesInfo';
+import DetailParamsInfo from './childComps/DetailParamsInfo';
 
 import Scroll from "components/common/scroll/Scroll";
 
-import { getDetail, Goods, Shop } from "../../network/detail";
+import { getDetail, Goods, Shop, GoodsParam } from "../../network/detail";
 
 import Swiper from "swiper";
 
@@ -42,7 +44,8 @@ export default {
       topImages: [],
       goods: {},
       shop: {},
-      detailInfo: {}
+      detailInfo: {},
+      goodsParam: {}
     };
   },
   created() {
@@ -65,8 +68,10 @@ export default {
         );
         // 2.获取商家信息
         this.shop = new Shop(data.shopInfo)
-        // 3.获取图片
+        // 3.获取商品图片
         this.detailInfo = data.detailInfo
+        // 4.获取商品尺寸
+        this.goodsParam = new GoodsParam(data.itemParams.info,data.itemParams.rule)
 
         // 轮播图
         this.$nextTick(() => {
@@ -92,6 +97,7 @@ export default {
     DetailBaseInfo,
     DetailShopInfo,
     DetailImagesInfo,
+    DetailParamsInfo,
 
     Scroll
   }

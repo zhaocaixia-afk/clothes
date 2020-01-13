@@ -53,6 +53,7 @@ export default {
 .shop {
   padding: 0 8px;
   color: var(--color-black);
+  border-bottom: 5px solid #f2f5f8;
   .shop-name {
     padding: 20px 0;
     display: flex;

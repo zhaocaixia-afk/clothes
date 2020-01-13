@@ -4,7 +4,7 @@
     <div class="info-price">
       <span class="n-price">{{ goods.newPrice }}</span>
       <span class="o-price">{{ goods.oldPrice }}</span>
-      <sup v-if="goods.discount" class="discount">{{ goods.discount }}</sup>
+      <sup v-if="goods.discount" class="discount" :style="{background:goods.discountBgColor}">{{ goods.discount }}</sup>
     </div>
     <div class="info-other">
       <span>{{ goods.columns[0] }}</span>
@@ -15,11 +15,10 @@
       <div
         class="info-service-item"
         v-for="index in goods.services.length - 1"
-        :key="index" v-if="goods.services[index - 1].icon"
+        :key="index"
+        v-if="goods.services[index - 1].icon"
       >
-        <img
-          :src="goods.services[index - 1].icon"
-        />
+        <img :src="goods.services[index - 1].icon" />
         <span>{{ goods.services[index - 1].name }}</span>
       </div>
     </div>
@@ -60,7 +59,6 @@ export default {
       margin: 0 5px;
     }
     sup {
-      background-color: var(--color-high-text);
       font-size: 14px;
       color: #fff;
       border-radius: 10px;
@@ -85,9 +83,10 @@ export default {
         height: 14px;
         margin-right: 5px;
       }
-      span{
-          color: var(--color-black);
-          font-weight: bold;
+      span {
+        color: var(--color-black);
+        font-weight: bold;
+        font-size: 14px;
       }
     }
   }
