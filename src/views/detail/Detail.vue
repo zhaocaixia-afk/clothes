@@ -19,6 +19,7 @@
       <detail-shop-info :shop="shop" />
       <detail-images-info :detailInfo="detailInfo"/>
       <detail-params-info :goodsParam="goodsParam"/>
+      <detail-comment-info :commentInfo="commentInfo"/>
     </scroll>
   </div>
 </template>
@@ -29,6 +30,7 @@ import DetailBaseInfo from "./childComps/DetailBaseInfo";
 import DetailShopInfo from "./childComps/DetailShopInfo";
 import DetailImagesInfo from './childComps/DetailImagesInfo';
 import DetailParamsInfo from './childComps/DetailParamsInfo';
+import DetailCommentInfo from './childComps/DetailCommentInfo';
 
 import Scroll from "components/common/scroll/Scroll";
 
@@ -45,7 +47,8 @@ export default {
       goods: {},
       shop: {},
       detailInfo: {},
-      goodsParam: {}
+      goodsParam: {},
+      commentInfo: {}
     };
   },
   created() {
@@ -72,6 +75,10 @@ export default {
         this.detailInfo = data.detailInfo
         // 4.获取商品尺寸
         this.goodsParam = new GoodsParam(data.itemParams.info,data.itemParams.rule)
+        // 5.商品评论信息
+        if(data.rate.cRate !== 0){
+          this.commentInfo = data.rate.list[0]
+        }
 
         // 轮播图
         this.$nextTick(() => {
@@ -98,7 +105,7 @@ export default {
     DetailShopInfo,
     DetailImagesInfo,
     DetailParamsInfo,
-
+    DetailCommentInfo,
     Scroll
   }
 };
