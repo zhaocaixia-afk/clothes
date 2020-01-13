@@ -1,6 +1,6 @@
 <template>
   <div class="goods-item" @click="itemClick">
-    <img :src="gooditem.showLarge.img" @load="imageLoad"/>
+    <img :src="showImage" @load="imageLoad"/>
     <p class="goods-title">{{ gooditem.title }}</p>
     <p class="goods-info">
       <span class="price">{{ gooditem.price }}</span>
@@ -20,8 +20,16 @@ export default {
       }
     }
   },
+  computed:{
+    showImage(){
+      return this.gooditem.image || this.gooditem.showLarge.img
+    }
+  },
   methods: {
     // 图片加载完成,发出事件,进行高度刷新
+    // 问题:首页 详情页 都引入了这个组件
+    // 解决1:路由判断this.$route.path.indexOf('/home')
+    // 解决2:离开页面时,停止
     imageLoad(){
       this.$bus.$emit('itemImageLoad')
     },

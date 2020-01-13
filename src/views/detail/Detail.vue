@@ -20,6 +20,7 @@
       <detail-images-info :detailInfo="detailInfo"/>
       <detail-params-info :goodsParam="goodsParam"/>
       <detail-comment-info :commentInfo="commentInfo"/>
+      <goods-list :goodsList="recommend"/>
     </scroll>
   </div>
 </template>
@@ -34,9 +35,11 @@ import DetailCommentInfo from './childComps/DetailCommentInfo';
 
 import Scroll from "components/common/scroll/Scroll";
 
-import { getDetail, Goods, Shop, GoodsParam } from "../../network/detail";
+import { getDetail, getRecommend, Goods, Shop, GoodsParam } from "network/detail";
 
 import Swiper from "swiper";
+
+import GoodsList from '../../components/content/goods/GoodsList'
 
 export default {
   name: "Detail",
@@ -48,19 +51,22 @@ export default {
       shop: {},
       detailInfo: {},
       goodsParam: {},
-      commentInfo: {}
+      commentInfo: {},
+
+      recommend: []
     };
   },
   created() {
     // this.iid = this.$route.params.iid
     this.iid = this.$route.query.iid;
     this.getDetail(); //请求详情数据
+    this.getRecommend();
   },
   methods: {
     // 请求数据方法
     getDetail() {
       getDetail(this.iid).then(res => {
-        console.log(res);
+        // console.log(res);
         const data = res.result;
         this.topImages = data.itemInfo.topImages;
         // 1.获取商品信息
@@ -95,6 +101,12 @@ export default {
         });
       });
     },
+    getRecommend(){
+      getRecommend().then(res => {
+        console.log(res)
+        this.recommend = res.data.list
+      })
+    },
     imgLoad(){
       this.$refs.scroll.refresh();
     }
@@ -106,7 +118,8 @@ export default {
     DetailImagesInfo,
     DetailParamsInfo,
     DetailCommentInfo,
-    Scroll
+    Scroll,
+    GoodsList
   }
 };
 </script>

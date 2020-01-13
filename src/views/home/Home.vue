@@ -107,7 +107,10 @@ export default {
     this.$refs.scroll.refresh()
   },
   deactivated() {
+    // 离开keep-alive的操作
+    // 1.记录Y值
     this.saveY = this.$refs.scroll.getScrollY()
+    // 2.取消全局事件的监听
   },
   methods: {
     // 1.根据子组件传过来的值,动态的展示goodslist的内容
