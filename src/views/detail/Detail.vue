@@ -127,7 +127,8 @@ export default {
       });
     },
     imgLoad() {
-      this.$refs.scroll.refresh();
+      this.newRefresh();
+      // this.$refs.scroll.refresh();
     }
   },
   components: {

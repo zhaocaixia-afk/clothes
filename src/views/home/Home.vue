@@ -119,7 +119,6 @@ export default {
     this.saveY = this.$refs.scroll.getScrollY()
     // 2.取消全局事件的监听
     this.$bus.$off('itemImageLoad',this.itemImgListener)
-    console.log('QU')
   },
   methods: {
     // 1.根据子组件传过来的值,动态的展示goodslist的内容
