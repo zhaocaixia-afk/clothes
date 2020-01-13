@@ -45,8 +45,8 @@ export default {
     }
   },
   watch: {
-    imagesInfo() {
-      this.imagesLength = this.imagesInfo.detailImage[0].list.length;
+    detailInfo() {
+      this.imagesLength = this.detailInfo.detailImage[0].list.length;
     }
   }
 };

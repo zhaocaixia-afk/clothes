@@ -30,6 +30,7 @@ export default {
   methods: {
     changIndex(index) {
       this.currentIndex = index;
+      this.$emit('clickCurrent',index)
     },
     back() {
       this.$router.back();

@@ -1,6 +1,6 @@
 <template>
   <div class="detail">
-    <detail-nav-bar></detail-nav-bar>
+    <detail-nav-bar @clickCurrent="clickCurrent"/>
     <!-- 轮播图 -->
     <scroll class="scroll" :probe-type="3" ref="scroll">
       <div class="swiper-container">
@@ -17,10 +17,10 @@
       </div>
       <detail-base-info :goods="goods" />
       <detail-shop-info :shop="shop" />
-      <detail-images-info :detailInfo="detailInfo" />
-      <detail-params-info :goodsParam="goodsParam" />
-      <detail-comment-info :commentInfo="commentInfo" />
-      <goods-list :goodsList="recommend" />
+      <detail-images-info :detailInfo="detailInfo" @imgLoad="imgLoad"/>
+      <detail-params-info :goodsParam="goodsParam" ref="params"/>
+      <detail-comment-info :commentInfo="commentInfo" ref="comment"/>
+      <goods-list :goodsList="recommend" ref="recommend"/>
     </scroll>
   </div>
 </template>
@@ -63,7 +63,7 @@ export default {
       commentInfo: {},
 
       recommend: [],
-      // itemImgListener: null
+      navBarList: []
     };
   },
   created() {
@@ -127,8 +127,17 @@ export default {
       });
     },
     imgLoad() {
-      this.newRefresh();
-      // this.$refs.scroll.refresh();
+      this.newRefresh(); //调用了抖动函数
+      // this.$refs.scroll.refresh(); //DetailImagesInfo.vue里面做了判断
+      // 填充navBarList,做点击
+      this.navBarList = []
+      this.navBarList.push(0)
+      this.navBarList.push(this.$refs.params.$el.offsetTop)
+      this.navBarList.push(this.$refs.comment.$el.offsetTop)
+      this.navBarList.push(this.$refs.recommend.$el.offsetTop)
+    },
+    clickCurrent(index){
+      this.$refs.scroll.scrollTo(0,-this.navBarList[index]+44,200)
     }
   },
   components: {
