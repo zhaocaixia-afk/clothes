@@ -20,6 +20,7 @@ const actions = {
             context.commit(ADD_COUNT,oldProduct)
         }else{
             payload.count = 1
+            payload.isCheck = true
             context.commit(ADD_TO_CART,payload)
         }
     }

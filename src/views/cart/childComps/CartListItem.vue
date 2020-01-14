@@ -1,7 +1,7 @@
 <template>
   <div class="shop-item">
     <div class="item-selector">
-      <check-button/>
+      <check-button :is-checked="cartItem.isCheck" @click.native="changeChecked"/>
     </div>
     <div class="item-img">
       <img :src="cartItem.image" alt="商品图片" />
@@ -27,6 +27,11 @@ export default {
       default() {
         return {};
       }
+    }
+  },
+  methods: {
+    changeChecked(){
+      this.cartItem.isCheck = !this.cartItem.isCheck
     }
   },
   components: {
