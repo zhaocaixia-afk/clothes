@@ -1,6 +1,8 @@
 <template>
   <div class="shop-item">
-    <div class="item-selector"></div>
+    <div class="item-selector">
+      <check-button/>
+    </div>
     <div class="item-img">
       <img :src="cartItem.image" alt="商品图片" />
     </div>
@@ -16,6 +18,7 @@
 </template>
 
 <script>
+import CheckButton from 'components/content/checkbutton/CheckButton';
 export default {
   name: "CartListItem",
   props: {
@@ -25,6 +28,9 @@ export default {
         return {};
       }
     }
+  },
+  components: {
+    CheckButton
   }
 };
 </script>
