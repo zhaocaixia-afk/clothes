@@ -24,7 +24,11 @@ const actions = {
         }
     }
 }
-const getters = {}
+const getters = {
+    cartListLength(state){
+        return state.cartList.length
+    }
+}
 export default {
     state,
     mutations,
