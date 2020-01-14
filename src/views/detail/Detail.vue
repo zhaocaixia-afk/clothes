@@ -25,7 +25,7 @@
 
     <back-top @click.native="backClick" v-show="isShowBackTop" />
 
-    <detail-bottom-bar/>
+    <detail-bottom-bar @addCart="addCart"/>
   </div>
 </template>
 
@@ -39,8 +39,6 @@ import DetailCommentInfo from "./childComps/DetailCommentInfo";
 import DetailBottomBar from './childComps/DetailBottomBar';
 
 import Scroll from "components/common/scroll/Scroll";
-
-// import BackTop from "../../components/content/backtop/BackTop"
 
 import {
   getDetail,
@@ -134,6 +132,7 @@ export default {
         this.recommend = res.data.list;
       });
     },
+    // 监听图片是否加载完成,refresh()
     imgLoad() {
       this.newRefresh(); //调用了抖动函数
       // this.$refs.scroll.refresh(); //DetailImagesInfo.vue里面做了判断
@@ -145,9 +144,11 @@ export default {
       this.navBarList.push(this.$refs.recommend.$el.offsetTop)
       this.navBarList.push(Number.MAX_VALUE)
     },
+    // 点击NavBar
     clickCurrent(index){
       this.$refs.scroll.scrollTo(0,-this.navBarList[index]+44,200)
     },
+    // 滚动对应NavBar和BackTop显示
     scroll(position){
       this.showTop(position)
 
@@ -168,6 +169,17 @@ export default {
           this.$refs.navbar.currentIndex = this.navbarIndex
         }
       }
+    },
+    // 加入购物车
+    addCart(){
+      const product = {}
+      product.image = this.topImages[0]
+      product.title = this.goods.title
+      product.desc = this.goods.desc
+      product.price = this.goods.lowNowPrice
+      product.iid = this.iid
+      // console.log(product)
+      this.$store.dispatch("addCart",product)
     }
   },
   components: {
