@@ -1,8 +1,8 @@
 <template>
   <div class="detail">
-    <detail-nav-bar @clickCurrent="clickCurrent"/>
+    <detail-nav-bar @clickCurrent="clickCurrent" ref="navbar"/>
     <!-- 轮播图 -->
-    <scroll class="scroll" :probe-type="3" ref="scroll">
+    <scroll class="scroll" :probe-type="3" ref="scroll" @scroll="scroll">
       <div class="swiper-container">
         <div class="swiper-wrapper">
           <div
@@ -20,7 +20,7 @@
       <detail-images-info :detailInfo="detailInfo" @imgLoad="imgLoad"/>
       <detail-params-info :goodsParam="goodsParam" ref="params"/>
       <detail-comment-info :commentInfo="commentInfo" ref="comment"/>
-      <goods-list :goodsList="recommend" ref="recommend"/>
+      <goods-list :goodsList="recommend" ref="recommend" class="goods-list"/>
     </scroll>
   </div>
 </template>
@@ -63,7 +63,8 @@ export default {
       commentInfo: {},
 
       recommend: [],
-      navBarList: []
+      navBarList: [],
+      navbarIndex: 0
     };
   },
   created() {
@@ -135,9 +136,29 @@ export default {
       this.navBarList.push(this.$refs.params.$el.offsetTop)
       this.navBarList.push(this.$refs.comment.$el.offsetTop)
       this.navBarList.push(this.$refs.recommend.$el.offsetTop)
+      this.navBarList.push(Number.MAX_VALUE)
     },
     clickCurrent(index){
       this.$refs.scroll.scrollTo(0,-this.navBarList[index]+44,200)
+    },
+    scroll(position){
+      let scrollTop = -position.y + 44
+      let length = this.navBarList.length
+      // 方式一
+      // for(let i=0;i<length;i++){
+      //   if( (this.navbarIndex !== i) && (i<length-1 && scrollTop >= this.navBarList[i] && scrollTop < this.navBarList[i+1]) || (this.navbarIndex !== i) && (i === length-1 && scrollTop >= this.navBarList[i])){
+      //     // console.log(this.navbarIndex)
+      //     this.navbarIndex = i
+      //     this.$refs.navbar.currentIndex = this.navbarIndex
+      //   }
+      // }
+      // 方式二:数组中添加一个最大值
+      for(let i=0;i<length;i++){
+        if((this.navbarIndex !== i) && (scrollTop >= this.navBarList[i] && scrollTop < this.navBarList[i+1])){
+          this.navbarIndex = i
+          this.$refs.navbar.currentIndex = this.navbarIndex
+        }
+      }
     }
   },
   components: {
@@ -162,6 +183,10 @@ export default {
     height: calc(100% - 44px);
     .swiper-container {
       height: 300px;
+    }
+    .goods-list{
+      border-top: 5px solid #f2f5f8;
+      padding-top: 30px;
     }
   }
 }
