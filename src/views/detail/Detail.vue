@@ -2,7 +2,7 @@
   <div class="detail">
     <detail-nav-bar @clickCurrent="clickCurrent" ref="navbar"/>
     <!-- 轮播图 -->
-    <scroll class="scroll" :probe-type="3" ref="scroll" @scroll="scroll">
+    <scroll ref="scroll" class="scroll" :probe-type="3"  @scroll="scroll">
       <div class="swiper-container">
         <div class="swiper-wrapper">
           <div
@@ -22,6 +22,9 @@
       <detail-comment-info :commentInfo="commentInfo" ref="comment"/>
       <goods-list :goodsList="recommend" ref="recommend" class="goods-list"/>
     </scroll>
+
+    <back-top @click.native="backClick" v-show="isShowBackTop" />
+
     <detail-bottom-bar/>
   </div>
 </template>
@@ -37,6 +40,8 @@ import DetailBottomBar from './childComps/DetailBottomBar';
 
 import Scroll from "components/common/scroll/Scroll";
 
+// import BackTop from "../../components/content/backtop/BackTop"
+
 import {
   getDetail,
   getRecommend,
@@ -49,11 +54,11 @@ import Swiper from "swiper";
 
 import GoodsList from "components/content/goods/GoodsList";
 
-import {itemListenerMixin} from 'common/mixin';
+import {itemListenerMixin,scrollTopMixin} from 'common/mixin';
 
 export default {
   name: "Detail",
-  mixins: [itemListenerMixin],
+  mixins: [itemListenerMixin,scrollTopMixin],
   data() {
     return {
       iid: null,
@@ -144,6 +149,8 @@ export default {
       this.$refs.scroll.scrollTo(0,-this.navBarList[index]+44,200)
     },
     scroll(position){
+      this.showTop(position)
+
       let scrollTop = -position.y + 44
       let length = this.navBarList.length
       // 方式一
@@ -172,7 +179,8 @@ export default {
     DetailCommentInfo,
     DetailBottomBar,
     Scroll,
-    GoodsList
+    GoodsList,
+    // BackTop
   }
 };
 </script>

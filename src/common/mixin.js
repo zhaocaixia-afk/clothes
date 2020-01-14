@@ -1,4 +1,5 @@
 import {debounce} from './utils'
+import BackTop from "components/content/backtop/BackTop";
 // 混入
 export const itemListenerMixin = {
   data() {
@@ -17,3 +18,25 @@ export const itemListenerMixin = {
     this.$bus.$on("itemImageLoad", this.itemImgListener);
   }
 };
+
+export const scrollTopMixin = {
+  data(){
+    return {
+      isShowBackTop: false,
+    }
+  },
+  components: {
+    BackTop
+  },
+  methods: {
+    // 2.点击回到顶部
+    backClick() {
+      // 调用组件中的方法
+      this.$refs.scroll.scrollTo(0,0,200);
+    },
+    // 抽离控制按钮显示函数
+    showTop(position){
+      this.isShowBackTop = -position.y > 1000;
+    },
+  }
+}

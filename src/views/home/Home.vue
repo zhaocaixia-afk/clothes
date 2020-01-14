@@ -52,7 +52,6 @@ import NavBar from "components/common/navbar/NavBar";
 import TabControl from "components/content/tabcontrol/TabControl";
 import GoodsList from "components/content/goods/GoodsList";
 import Scroll from "components/common/scroll/Scroll";
-import BackTop from "components/content/backtop/BackTop";
 
 import HomeRecommend from "./childComponent/HomeRecommend";
 import HomeFeatureView from "./childComponent/HomeFeatureView";
@@ -60,12 +59,11 @@ import HomeFeatureView from "./childComponent/HomeFeatureView";
 import { getMultidata, getHomeGoods } from "network/home";
 import Swiper from "swiper";
 
-// import { debounce } from "common/utils";
-import {itemListenerMixin} from 'common/mixin';
+import {itemListenerMixin,scrollTopMixin} from 'common/mixin';
 
 export default {
   name: "Home",
-  mixins: [itemListenerMixin],
+  mixins: [itemListenerMixin,scrollTopMixin],
   data() {
     return {
       banner: [],
@@ -77,7 +75,7 @@ export default {
         sell: { page: 0, list: [] }
       },
       currentTabClick: "pop",
-      isShowBackTop: false,
+      // isShowBackTop: false,
 
       tabOffsetTop: 0, //tabControl高度
       isLoad: false, //判读轮播图图片,加载次数
@@ -110,6 +108,7 @@ export default {
   },
   // 下面两个函数,解决keep-active问题
   activated() {
+    // console.log(this.saveY)
     this.$refs.scroll.scrollTo(0,this.saveY,0)
     this.$refs.scroll.refresh()
   },
@@ -117,6 +116,7 @@ export default {
     // 离开keep-alive的操作
     // 1.记录Y值
     this.saveY = this.$refs.scroll.getScrollY()
+    // console.log(this.saveY)
     // 2.取消全局事件的监听
     this.$bus.$off('itemImageLoad',this.itemImgListener)
   },
@@ -137,14 +137,17 @@ export default {
       this.$refs.tabControl1.currentIndex = index
     },
     // 2.点击回到顶部
-    backClick() {
-      // 调用组件中的方法
-      this.$refs.scroll.scrollTo(0, 0);
-    },
+    // 3.抽离是否显示向上按钮为一个函数
+    // showTop(position){
+    //   this.isShowBackTop = -position.y > 1000;
+    // },
+
     // 3.根据滚动
     contentScroll(position) {
       // 1.判断是否显示向上按钮
-      this.isShowBackTop = -position.y > 1000;
+      // this.isShowBackTop = -position.y > 1000;
+      this.showTop(position)
+      
       // 2.决定tabControl是否吸顶
       this.isTabFixed = -position.y > this.tabOffsetTop;
     },
@@ -159,7 +162,6 @@ export default {
         this.isLoad = true;
       }
     },
-
     // (/home/multidata)接口数据
     getMultidata() {
       getMultidata().then(res => {
@@ -201,7 +203,6 @@ export default {
     TabControl,
     GoodsList,
     Scroll,
-    BackTop,
 
     HomeRecommend,
     HomeFeatureView
