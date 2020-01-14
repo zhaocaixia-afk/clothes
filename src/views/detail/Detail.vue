@@ -22,6 +22,7 @@
       <detail-comment-info :commentInfo="commentInfo" ref="comment"/>
       <goods-list :goodsList="recommend" ref="recommend" class="goods-list"/>
     </scroll>
+    <detail-bottom-bar/>
   </div>
 </template>
 
@@ -32,6 +33,7 @@ import DetailShopInfo from "./childComps/DetailShopInfo";
 import DetailImagesInfo from "./childComps/DetailImagesInfo";
 import DetailParamsInfo from "./childComps/DetailParamsInfo";
 import DetailCommentInfo from "./childComps/DetailCommentInfo";
+import DetailBottomBar from './childComps/DetailBottomBar';
 
 import Scroll from "components/common/scroll/Scroll";
 
@@ -168,6 +170,7 @@ export default {
     DetailImagesInfo,
     DetailParamsInfo,
     DetailCommentInfo,
+    DetailBottomBar,
     Scroll,
     GoodsList
   }
@@ -180,7 +183,7 @@ export default {
   height: 100vh;
   .scroll {
     overflow: hidden;
-    height: calc(100% - 44px);
+    height: calc(100% - 44px - 58px);
     .swiper-container {
       height: 300px;
     }
