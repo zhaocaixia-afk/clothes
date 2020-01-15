@@ -8,8 +8,7 @@ module.exports = {
     devServer:{
         open:true
     },
-    // 文件别名
-    // vue-cli3.x
+    // 文件别名vue-cli3.x
     chainWebpack:(config) => {
         config.resolve.alias
         .set('assets',resolve('./src/assets'))
