@@ -4,7 +4,7 @@
       <check-button :is-checked="cartItem.isCheck" @click.native="changeChecked(cartItem.iid)"/>
     </div>
     <div class="item-img">
-      <img :src="cartItem.image" alt="商品图片" />
+      <img v-lazy="cartItem.image" alt="商品图片" />
     </div>
     <div class="item-info">
       <div class="item-title">{{ cartItem.title }}</div>
