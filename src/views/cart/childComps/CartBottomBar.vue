@@ -2,7 +2,7 @@
   <div class="bottom-bar">
     <div class="check">
       <check-button class="check-button" :is-checked="isSelectAll" />
-      <span>全选</span>
+      <span @click="clickAll">全选</span>
     </div>
     <div class="total-price">
       <span>合计:￥{{ totalPrice }}</span>
@@ -34,15 +34,29 @@ export default {
         .toFixed(2);
     },
     totalCount() {
-      return this.cartList.filter(item => {
-        return item.isCheck;
-      }).length;
+      return this.cartList
+        .filter(item => {
+          return item.isCheck;
+        })
+        .reduce((preCount, item) => {
+          return item.count + preCount;
+        }, 0);
     },
     isSelectAll() {
       if (this.cartList.length === 0) return false;
       // 找isCheck为false,length大于0
       return !this.cartList.filter(item => !item.isCheck).length;
       // return !this.cartList.find(item => !item.isCheck)
+    }
+  },
+  methods: {
+    // 1.全选按钮点击
+    clickAll() {
+        if(this.isSelectAll){
+            this.cartList.forEach(item => item.isCheck = false)
+        }else{
+            this.cartList.forEach(item => item.isCheck = true)
+        }
     }
   },
   components: {
