@@ -11,6 +11,15 @@ const mutations = {
     // 2.加入数组的操作
     [ADD_TO_CART](state,payload){
         state.cartList.push(payload)
+    },
+    // 3.根据iid找到{}更改isCheck
+    updateIidCheck(state,iid){
+        state.cartList.some(item => {
+            if(item.iid === iid){
+                item.isCheck = !item.isCheck
+                return true;
+            }
+        })
     }
 }
 const actions = {

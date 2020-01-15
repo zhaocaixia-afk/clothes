@@ -1,7 +1,7 @@
 <template>
   <div class="shop-item">
     <div class="item-selector">
-      <check-button :is-checked="cartItem.isCheck" @click.native="changeChecked"/>
+      <check-button :is-checked="cartItem.isCheck" @click.native="changeChecked(cartItem.iid)"/>
     </div>
     <div class="item-img">
       <img :src="cartItem.image" alt="商品图片" />
@@ -19,6 +19,7 @@
 
 <script>
 import CheckButton from 'components/content/checkbutton/CheckButton';
+import { mapMutations } from 'vuex';
 export default {
   name: "CartListItem",
   props: {
@@ -30,8 +31,10 @@ export default {
     }
   },
   methods: {
-    changeChecked(){
-      this.cartItem.isCheck = !this.cartItem.isCheck
+    ...mapMutations(['updateIidCheck']),
+    changeChecked(iid){
+      // 1.调用mutation的方法
+      this.updateIidCheck(iid)
     }
   },
   components: {
