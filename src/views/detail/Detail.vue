@@ -179,7 +179,9 @@ export default {
       product.price = this.goods.lowNowPrice
       product.iid = this.iid
       // console.log(product)
-      this.$store.dispatch("addCart",product)
+      this.$store.dispatch("addCart",product).then(res => {
+        console.log(res)
+      })
     }
   },
   components: {

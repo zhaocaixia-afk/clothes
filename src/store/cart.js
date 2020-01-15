@@ -1,4 +1,5 @@
-import {ADD_COUNT,ADD_TO_CART} from './mutation-types'
+const ADD_COUNT = 'add_count'
+const ADD_TO_CART = 'add_to_cart'
 
 const state = {
     cartList: []
@@ -24,14 +25,18 @@ const mutations = {
 }
 const actions = {
     addCart(context,payload){
-        let oldProduct = state.cartList.find( item => item.iid === payload.iid )
-        if(oldProduct){
-            context.commit(ADD_COUNT,oldProduct)
-        }else{
-            payload.count = 1
-            payload.isCheck = true
-            context.commit(ADD_TO_CART,payload)
-        }
+        return new Promise((resolve,reject) => {
+            let oldProduct = state.cartList.find( item => item.iid === payload.iid )
+            if(oldProduct){
+                context.commit(ADD_COUNT,oldProduct)
+                resolve('当前的商品数量+1')
+            }else{
+                payload.count = 1
+                payload.isCheck = true
+                context.commit(ADD_TO_CART,payload)
+                resolve('添加了新的商品')
+            }
+        })
     }
 }
 const getters = {
