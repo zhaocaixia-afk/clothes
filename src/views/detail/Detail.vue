@@ -26,10 +26,14 @@
     <back-top @click.native="backClick" v-show="isShowBackTop" />
 
     <detail-bottom-bar @addCart="addCart"/>
+
+    <toast :message="message" :show="show"/>
   </div>
 </template>
 
 <script>
+import Toast from '../../components/common/toast/Toast';
+
 import DetailNavBar from "./childComps/DetailNavBar";
 import DetailBaseInfo from "./childComps/DetailBaseInfo";
 import DetailShopInfo from "./childComps/DetailShopInfo";
@@ -69,7 +73,9 @@ export default {
 
       recommend: [],
       navBarList: [],
-      navbarIndex: 0
+      navbarIndex: 0,
+      message: '',
+      show: false
     };
   },
   created() {
@@ -180,7 +186,12 @@ export default {
       product.iid = this.iid
       // console.log(product)
       this.$store.dispatch("addCart",product).then(res => {
-        console.log(res)
+        this.show = true
+        this.message = res;
+        setTimeout(()=>{
+          this.show = false
+          this.message = ''
+        },2000)
       })
     }
   },
@@ -194,7 +205,7 @@ export default {
     DetailBottomBar,
     Scroll,
     GoodsList,
-    // BackTop
+    Toast
   }
 };
 </script>
