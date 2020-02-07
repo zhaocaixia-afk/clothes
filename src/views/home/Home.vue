@@ -3,12 +3,14 @@
     <nav-bar class="home-nav">
       <div slot="center">购物街</div>
     </nav-bar>
+
     <tab-control
       class="home-tab-control"
       @tabClick="tabClick"
       :tabList="['流行', '新款', '精选']"
       ref="tabControl1" v-show="isTabFixed"
     />
+
     <scroll
       ref="scroll"
       class="scroll"
@@ -32,8 +34,8 @@
         </div>
         <div class="swiper-pagination"></div>
       </div>
-      <home-recommend :recommend="recommend" />
-      <home-feature-view />
+      <home-recommend :recommend="recommend"/>
+      <home-feature-view/>
       <tab-control
         class="home-tab-control"
         @tabClick="tabClick"
@@ -79,6 +81,8 @@ export default {
 
       tabOffsetTop: 0, //tabControl高度
       isLoad: false, //判读轮播图图片,加载次数
+      isHomeRecommend: false,
+      isHomeFeatureView: false,
 
       isTabFixed: false, //是否吸顶
 
@@ -115,6 +119,8 @@ export default {
   deactivated() {
     // 离开keep-alive的操作
     // 1.记录Y值
+    // console.log(this.saveY)
+    // this.$refs.scroll.refresh()
     this.saveY = this.$refs.scroll.getScrollY()
     // console.log(this.saveY)
     // 2.取消全局事件的监听
@@ -133,6 +139,7 @@ export default {
         case 2:
           this.currentTabClick = "sell";
       }
+      // 重点
       this.$refs.tabControl2.currentIndex = index
       this.$refs.tabControl1.currentIndex = index
     },
@@ -153,16 +160,19 @@ export default {
     },
     // 4.上拉加载更多
     loadMore() {
+      // 当前点击的值,页数在getHomeGoods中处理
       this.getHomeGoods(this.currentTabClick);
     },
     // 5.轮播图图片是否加载完
     imageLoad() {
+      // console.log(this.isLoad)
       if (!this.isLoad) {
         this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop;
-        this.isLoad = true;
+        // console.log(this.tabOffsetTop)
+        this.isLoad = true; //减少函数执行的次数
       }
     },
-    // (/home/multidata)接口数据
+    // 6.(轮播图,下面四张图片)(/home/multidata)接口数据
     getMultidata() {
       getMultidata().then(res => {
         this.banner = res.data.banner.list;
@@ -186,11 +196,11 @@ export default {
         });
       });
     },
-    // (/home/data?type=变量&page=变量)接口数据
+    // 7.(/home/data?type=变量&page=变量)接口数据
     getHomeGoods(type) {
       let page = this.goods[type].page + 1;
       getHomeGoods(type, page).then(res => {
-        // console.log(res);
+        // console.log(res.data.list);
         this.goods[type].list.push(...res.data.list);
         this.goods[type].page += 1;
 

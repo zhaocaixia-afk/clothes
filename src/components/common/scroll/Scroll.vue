@@ -39,7 +39,6 @@ export default {
         this.$emit("scroll", position);
       });
     }
-
     // 3.监听滚动到底部 上拉事件
     if (this.pullUpLoad) {
       this.scroll.on("pullingUp", () => {

@@ -101,6 +101,7 @@ export default {
         this.shop = new Shop(data.shopInfo);
         // 3.获取商品图片
         this.detailInfo = data.detailInfo;
+        // console.log(this.detailInfo)
         // 4.获取商品尺寸
         this.goodsParam = new GoodsParam(
           data.itemParams.info,
@@ -110,7 +111,6 @@ export default {
         if (data.rate.cRate !== 0) {
           this.commentInfo = data.rate.list[0];
         }
-
         // 轮播图
         this.$nextTick(() => {
           new Swiper(".swiper-container", {
@@ -146,6 +146,7 @@ export default {
     },
     // 点击NavBar
     clickCurrent(index){
+      // console.log(this.navBarList)
       this.$refs.scroll.scrollTo(0,-this.navBarList[index]+44,200)
     },
     // 滚动对应NavBar和BackTop显示
