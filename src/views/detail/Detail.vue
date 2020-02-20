@@ -204,6 +204,8 @@ export default {
 @import "../../../node_modules/swiper/css/swiper.min.css";
 .detail {
   height: 100vh;
+  // display: flex;
+  
   .scroll {
     overflow: hidden;
     height: calc(100% - 44px - 58px);
@@ -213,6 +215,9 @@ export default {
     .goods-list{
       border-top: 5px solid #f2f5f8;
       padding-top: 30px;
+      // display: flex;
+      // display: flex;
+      // jus
     }
   }
 }

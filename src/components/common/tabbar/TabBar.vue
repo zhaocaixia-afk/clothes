@@ -18,6 +18,6 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background: #999;
+    background: #fff;
 }
 </style>
