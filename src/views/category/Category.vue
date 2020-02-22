@@ -1,7 +1,7 @@
 <template>
   <div class="category">
     <category-menu :categories="categories" class="category-menu" />
-    <category-content class="category-content" />
+    <category-content class="category-content"/>
   </div>
 </template>
 
