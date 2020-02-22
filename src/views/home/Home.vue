@@ -226,10 +226,6 @@ export default {
 #home {
   height: 100vh;
   position: relative;
-  .home-nav {
-    background-color: var(--color-tint);
-    color: var(--color-word);
-  }
   .home-tab-control{
     position: relative;
     z-index: 9;

@@ -1,6 +1,6 @@
 <template>
   <div class="detail">
-    <detail-nav-bar @clickCurrent="clickCurrent" ref="navbar"/>
+    <detail-nav-bar @clickCurrent="clickCurrent" ref="navbar" class="detail-nav-bar"/>
     <!-- 轮播图 -->
     <scroll ref="scroll" class="scroll" :probe-type="3"  @scroll="scroll">
       <div class="swiper-container">
@@ -204,7 +204,10 @@ export default {
 @import "../../../node_modules/swiper/css/swiper.min.css";
 .detail {
   height: 100vh;
-  // display: flex;
+  .detail-nav-bar{
+    color: black;
+    background: #f2f5f8;
+  }
   
   .scroll {
     overflow: hidden;
@@ -215,9 +218,6 @@ export default {
     .goods-list{
       border-top: 5px solid #f2f5f8;
       padding-top: 30px;
-      // display: flex;
-      // display: flex;
-      // jus
     }
   }
 }

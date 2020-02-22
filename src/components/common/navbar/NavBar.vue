@@ -24,6 +24,8 @@
     height: 44px;
     line-height: 44px;
     text-align: center;
+    background-color: var(--color-tint);
+    color: var(--color-word);
     .left,.right{
         width: 60px;
     }

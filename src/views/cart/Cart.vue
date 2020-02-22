@@ -36,10 +36,6 @@ export default {
 <style lang="scss" scoped>
 .cart {
   height: 100vh;
-  .cart-nav {
-    background-color: var(--color-tint);
-    color: var(--color-word);
-  }
   .scroll{
     overflow: hidden;
     height: calc(100% - 44px - 49px - 40px);
