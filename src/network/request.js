@@ -4,7 +4,7 @@ export function request(config){
     const data = config.data || {}
     // 1.创建axios实例
     const instance = axios.create({
-        baseURL : "http://123.207.32.32:8000/api/hy",
+        baseURL : "http://123.207.32.32:8000/api/h3",
         timeout: 5000,
         data: data
     });
